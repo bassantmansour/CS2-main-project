@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/backgrounds">
+        <file>desertbackground.jpg</file>
+        <file>brownbricks.png</file>
+        <file>brownbricks copy 2.png</file>
+        <file>brownbricks copy.png</file>
+    </qresource>
+    <qresource prefix="/Obstacles">
+        <file>firepit.png</file>
+        <file>quicksand.png</file>
+        <file>cactus.png</file>
+    </qresource>
+    <qresource prefix="/Character">
+        <file>playersword.png</file>
+        <file>playercrouch.png</file>
+        <file>runningleft.png</file>
+        <file>runningright.png</file>
+        <file>playerstanding.png</file>
+    </qresource>
+    <qresource prefix="/Rewards">
+        <file>waterdroplet.tiff</file>
+    </qresource>
+</RCC>
