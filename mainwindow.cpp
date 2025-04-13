@@ -39,9 +39,19 @@ void MainWindow::setupGame()
     setCentralWidget(view);
 
     // Set background - desert scene scaled to fit
-    QPixmap background(":/backgrounds/desertbackground.jpg");
-    background = background.scaled(800, 600, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    scene->setBackgroundBrush(background);
+    QPixmap bgPixmap(":/backgrounds/desertbackground.jpg");
+    bgPixmap = bgPixmap.scaled(800, 600, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+    // Add two background images side by side
+    bg1 = scene->addPixmap(bgPixmap);
+    bg2 = scene->addPixmap(bgPixmap);
+
+    // Set their positions and z-order
+    bg1->setPos(0, 0);
+    bg2->setPos(800, 0);
+    bg1->setZValue(-1);
+    bg2->setZValue(-1);
+
 
     // Create player
     player = new Player();
@@ -62,20 +72,54 @@ void MainWindow::setupGame()
 
 void MainWindow::updateGame()
 {
-    // Add game update logic here
-    // This will be called approximately 60 times per second
-
-    // Check if player is out of bounds
     if (player->y() > 600) {
-        // Player fell off the screen - reset level
         level->resetLevel();
+        return;
     }
 
-    // Make sure player has focus
     if (!player->hasFocus()) {
         player->setFocus();
     }
+
+    const int scrollSpeed = 5;
+
+    // Scroll left if player is at right boundary and moving right
+    if (player->x() >= 600 && player->isMovingRight()) {
+        bg1->moveBy(-scrollSpeed, 0);
+        bg2->moveBy(-scrollSpeed, 0);
+
+        if (bg1->x() + 800 <= 0) {
+            bg1->setX(bg2->x() + 800);
+        }
+        if (bg2->x() + 800 <= 0) {
+            bg2->setX(bg1->x() + 800);
+        }
+
+        for (QGraphicsItem* item : scene->items()) {
+            if (item == player || item == bg1 || item == bg2) continue;
+            item->moveBy(-scrollSpeed, 0);
+        }
+    }
+
+    // Scroll right if player is at left boundary and moving left
+    if (player->x() <= 100 && player->isMovingLeft()) {
+        bg1->moveBy(scrollSpeed, 0);
+        bg2->moveBy(scrollSpeed, 0);
+
+        if (bg1->x() >= 800) {
+            bg1->setX(bg2->x() - 800);
+        }
+        if (bg2->x() >= 800) {
+            bg2->setX(bg1->x() - 800);
+        }
+
+        for (QGraphicsItem* item : scene->items()) {
+            if (item == player || item == bg1 || item == bg2) continue;
+            item->moveBy(scrollSpeed, 0);
+        }
+    }
 }
+
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {

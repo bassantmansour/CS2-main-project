@@ -24,7 +24,7 @@ void Level::setupLevel() {
     obstacles.clear();
     enemies.clear();
 
-    const int groundLevel = 450; // Y-position for ground level
+    const int groundLevel = 550; // Y-position for ground level
 
     // Set up obstacles, enemies, and the player based on the current level
     if (levelNumber == 1) {

@@ -30,6 +30,8 @@ public:
     // Public key event handlers
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
+    bool isMovingRight() const { return isRight; }
+    bool isMovingLeft() const { return isLeft;}
 
 private:
     int health;
@@ -38,6 +40,7 @@ private:
     bool isCrouching;
     bool isAttacking;
     bool isRight, isLeft;
+    float totalDistanceMoved = 0.0f;
 
     // Store scaled pixmaps as member variables
     QPixmap standingImage;

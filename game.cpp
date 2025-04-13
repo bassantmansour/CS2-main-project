@@ -56,12 +56,11 @@ void Game::startGame() {
 void Game::pauseGame() {
     gameTimer->stop();
 
-    // Create a "Paused" text in the middle of the screen
     QGraphicsTextItem* pauseText = scene->addText("PAUSED");
     pauseText->setPos(350, 250);
-    pauseText->setDefaultTextColor(Qt::white);
+    pauseText->setDefaultTextColor(Qt::black);
     QFont font = pauseText->font();
-    font.setPointSize(24);
+    font.setPointSize(150);
     pauseText->setFont(font);
     pauseText->setData(0, "pauseText"); // To identify this item later
 }

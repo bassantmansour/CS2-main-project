@@ -13,13 +13,13 @@ Player::Player() : health(100), coins(0), isJumping(false), isCrouching(false), 
     QPixmap attackPixmap(":/Character/playersword.png");
 
     // Scale images to appropriate size (adjust these values as needed)
-    int width = 60;
-    int height = 100;
-    standingPixmap = standingPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    int width = 150;
+    int height = 200;
+    standingPixmap = standingPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation); // maintianing the original ratio and making the image less pixalted
     runningRightPixmap = runningRightPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     runningLeftPixmap = runningLeftPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    crouchPixmap = crouchPixmap.scaled(width, height * 0.7, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    attackPixmap = attackPixmap.scaled(width * 1.2, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    crouchPixmap = crouchPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    attackPixmap = attackPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     // Store scaled pixmaps as member variables for quick access
     standingImage = standingPixmap;
@@ -40,24 +40,25 @@ Player::~Player() {}
 void Player::moveForward() {
     isRight = true;
     setPixmap(runningRightImage);
-    setPos(x() + 10, y()); // Increased speed slightly
 
-    // Boundary check to keep player within scene
-    if (scene() && x() > scene()->width() - 50) {
-        setPos(scene()->width() - 50, y());
+    if (x() < 600) {
+        setPos(x() + 25, y());
     }
 }
+
 
 void Player::moveBackward() {
     isLeft = true;
     setPixmap(runningLeftImage);
-    setPos(x() - 10, y()); // Increased speed slightly
 
-    // Boundary check to keep player within scene
-    if (x() < 0) {
-        setPos(0, y());
+    // Only move player until they reach left boundary
+    if (x() > 100) {
+        setPos(x() - 25, y());
     }
+
+    // Once player reaches left boundary, MainWindow will scroll background instead
 }
+
 
 void Player::jump() {
     if (!isJumping) {
