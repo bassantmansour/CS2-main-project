@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <QGraphicsScene>
 #include <QObject>
+#include <QPixmap>
 
 class Player : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
@@ -26,7 +27,7 @@ public:
     int getHealth() const;
     void setHealth(int health);
 
-protected:
+    // Public key event handlers
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
 
@@ -37,7 +38,13 @@ private:
     bool isCrouching;
     bool isAttacking;
     bool isRight, isLeft;
+
+    // Store scaled pixmaps as member variables
+    QPixmap standingImage;
+    QPixmap runningRightImage;
+    QPixmap runningLeftImage;
+    QPixmap crouchImage;
+    QPixmap attackImage;
 };
 
 #endif // PLAYER_H
-

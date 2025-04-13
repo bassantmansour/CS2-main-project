@@ -30,7 +30,7 @@ private:
     Level *level;           // The current level
     void setupGame();       // Function to set up the game environment
     void updateGame();      // Update the game each frame
-protected:
+// protected:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
 

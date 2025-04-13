@@ -4,43 +4,100 @@
 #include <QTimer>
 #include <QGraphicsRectItem>
 
-Player::Player() : health(100), coins(0), isJumping(false), isCrouching(false), isAttacking(false), isRight (false), isLeft (false) {
-    setPixmap(QPixmap(":/images/playerstanding.png"));
-    setPos(100, 100);
+Player::Player() : health(100), coins(0), isJumping(false), isCrouching(false), isAttacking(false), isRight(false), isLeft(false) {
+    // Load and scale player images
+    QPixmap standingPixmap(":/Character/playerstanding.png");
+    QPixmap runningRightPixmap(":/Character/runningright.png");
+    QPixmap runningLeftPixmap(":/Character/runningleft.png");
+    QPixmap crouchPixmap(":/Character/playercrouch.png");
+    QPixmap attackPixmap(":/Character/playersword.png");
+
+    // Scale images to appropriate size (adjust these values as needed)
+    int width = 60;
+    int height = 100;
+    standingPixmap = standingPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    runningRightPixmap = runningRightPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    runningLeftPixmap = runningLeftPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    crouchPixmap = crouchPixmap.scaled(width, height * 0.7, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    attackPixmap = attackPixmap.scaled(width * 1.2, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    // Store scaled pixmaps as member variables for quick access
+    standingImage = standingPixmap;
+    runningRightImage = runningRightPixmap;
+    runningLeftImage = runningLeftPixmap;
+    crouchImage = crouchPixmap;
+    attackImage = attackPixmap;
+
+    // Set initial pixmap
+    setPixmap(standingImage);
+
+    // Set initial position
+    setPos(100, 400);
 }
 
 Player::~Player() {}
 
 void Player::moveForward() {
     isRight = true;
-    setPixmap(QPixmap(":/images/runningright.png"));
-    setPos(x() + 5, y());
+    setPixmap(runningRightImage);
+    setPos(x() + 10, y()); // Increased speed slightly
 
+    // Boundary check to keep player within scene
+    if (scene() && x() > scene()->width() - 50) {
+        setPos(scene()->width() - 50, y());
+    }
 }
 
 void Player::moveBackward() {
     isLeft = true;
-    setPixmap(QPixmap(":/images/runningleft.png"));
-    setPos(x() - 5, y());
+    setPixmap(runningLeftImage);
+    setPos(x() - 10, y()); // Increased speed slightly
+
+    // Boundary check to keep player within scene
+    if (x() < 0) {
+        setPos(0, y());
+    }
 }
 
 void Player::jump() {
     if (!isJumping) {
         isJumping = true;
-        setPos(x(), y() - 50);
-        QTimer::singleShot(500, this, [this]() { isJumping = false; setPos(x(), y() + 50); });
+
+        // Create jump animation using QTimer for smooth movement
+        int jumpHeight = 150;
+        int jumpDuration = 500; // milliseconds
+        int steps = 20;
+        int stepDelay = jumpDuration / (steps * 2); // Up and down
+
+        // Jump up
+        for (int i = 0; i < steps; i++) {
+            QTimer::singleShot(i * stepDelay, this, [this, i, jumpHeight, steps]() {
+                setPos(x(), y() - (jumpHeight / steps));
+            });
+        }
+
+        // Fall down
+        for (int i = 0; i < steps; i++) {
+            QTimer::singleShot((i + steps) * stepDelay, this, [this, i, jumpHeight, steps]() {
+                setPos(x(), y() + (jumpHeight / steps));
+            });
+        }
+
+        // Reset jumping state
+        QTimer::singleShot(jumpDuration, this, [this]() {
+            isJumping = false;
+        });
     }
 }
 
 void Player::crouch() {
     isCrouching = true;
-    setPixmap(QPixmap(":/images/playercrouch.png"));
+    setPixmap(crouchImage);
 }
-
 
 void Player::attack() {
     isAttacking = true;
-    setPixmap(QPixmap(":/images/playersword.png"));
+    setPixmap(attackImage);
 }
 
 void Player::setPosition(int x, int y) {
@@ -83,19 +140,18 @@ void Player::keyPressEvent(QKeyEvent* event) {
 void Player::keyReleaseEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Down) {
         isCrouching = false;
-        setPixmap(QPixmap(":/images/playerstanding.png"));
+        setPixmap(standingImage);
     }
     if (event->key() == Qt::Key_A) {
         isAttacking = false;
-        setPixmap(QPixmap(":/images/playerstanding.png"));
+        setPixmap(standingImage);
     }
     if (event->key() == Qt::Key_Left) {
         isLeft = false;
-        setPixmap(QPixmap(":/images/playerstanding.png"));
+        setPixmap(standingImage);
     }
     if (event->key() == Qt::Key_Right) {
         isRight = false;
-        setPixmap(QPixmap(":/images/playerstanding.png"));
+        setPixmap(standingImage);
     }
-
 }
