@@ -20,4 +20,6 @@
     <qresource prefix="/Rewards">
         <file>waterdroplet.tiff</file>
     </qresource>
+    <qresource prefix="/Portals"/>
+    <qresource prefix="/Portal "/>
 </RCC>

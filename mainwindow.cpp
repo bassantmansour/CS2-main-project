@@ -118,6 +118,7 @@ void MainWindow::updateGame()
             item->moveBy(scrollSpeed, 0);
         }
     }
+
 }
 
 

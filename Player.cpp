@@ -15,7 +15,7 @@ Player::Player() : health(100), coins(0), isJumping(false), isCrouching(false), 
     // Scale images to appropriate size (adjust these values as needed)
     int width = 150;
     int height = 200;
-    standingPixmap = standingPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation); // maintianing the original ratio and making the image less pixalted
+    standingPixmap = standingPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     runningRightPixmap = runningRightPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     runningLeftPixmap = runningLeftPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     crouchPixmap = crouchPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -46,7 +46,6 @@ void Player::moveForward() {
     }
 }
 
-
 void Player::moveBackward() {
     isLeft = true;
     setPixmap(runningLeftImage);
@@ -55,10 +54,7 @@ void Player::moveBackward() {
     if (x() > 100) {
         setPos(x() - 25, y());
     }
-
-    // Once player reaches left boundary, MainWindow will scroll background instead
 }
-
 
 void Player::jump() {
     if (!isJumping) {
@@ -156,3 +152,4 @@ void Player::keyReleaseEvent(QKeyEvent* event) {
         setPixmap(standingImage);
     }
 }
+
