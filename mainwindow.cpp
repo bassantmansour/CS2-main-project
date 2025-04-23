@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "game.h"
 #include <QDebug>
+#include <QtCore/qtimer.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,52 +23,43 @@ MainWindow::~MainWindow()
     delete player;
     delete level;
 }
-
 void MainWindow::setupGame()
 {
-    // Create the scene
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, 800, 600);
 
-    // Create the view and set it as the central widget
     view = new QGraphicsView(scene, this);
     view->setFixedSize(800, 600);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setRenderHint(QPainter::Antialiasing); // Smoother graphics
+    view->setRenderHint(QPainter::Antialiasing);
     setCentralWidget(view);
 
-    // Set background - desert scene scaled to fit
     QPixmap bgPixmap(":/backgrounds/desertbackground.jpg");
     bgPixmap = bgPixmap.scaled(800, 600, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-
-    // Add two background images side by side
     bg1 = scene->addPixmap(bgPixmap);
     bg2 = scene->addPixmap(bgPixmap);
-
-    // Set their positions and z-order
     bg1->setPos(0, 0);
     bg2->setPos(800, 0);
     bg1->setZValue(-1);
     bg2->setZValue(-1);
 
-
-    // Create player
     player = new Player();
+    scene->addItem(player);
     player->setFlag(QGraphicsItem::ItemIsFocusable);
+    player->setFocus();
+    player->setPosition(100, 400);
 
-    // Create level
     level = new Level(1, scene, player);
     level->setupLevel();
 
-    // Create a game loop timer for updating animations and game state
     QTimer* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateGame);
-    timer->start(16); // Approximately 60 FPS
+    timer->start(16);
 
-    // Give focus to the player so it can receive key events
-    player->setFocus();
+    scene->setSceneRect(0, 0, 800, 600);
 }
+
 
 void MainWindow::updateGame()
 {
