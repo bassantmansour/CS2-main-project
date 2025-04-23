@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QObject>
 #include <QPixmap>
+#include <QTimer>
 
 class Player : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
@@ -27,11 +28,11 @@ public:
     int getHealth() const;
     void setHealth(int health);
 
-    // Public key event handlers
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
+
     bool isMovingRight() const { return isRight; }
-    bool isMovingLeft() const { return isLeft;}
+    bool isMovingLeft() const { return isLeft; }
 
 private:
     int health;
@@ -41,13 +42,18 @@ private:
     bool isAttacking;
     bool isRight, isLeft;
     float totalDistanceMoved = 0.0f;
+    QTimer* jumpTimer;
+    int velocityY;
+    int groundY;
 
-    // Store scaled pixmaps as member variables
     QPixmap standingImage;
     QPixmap runningRightImage;
     QPixmap runningLeftImage;
     QPixmap crouchImage;
     QPixmap attackImage;
 };
+
+#endif 
+
 
 #endif // PLAYER_H
