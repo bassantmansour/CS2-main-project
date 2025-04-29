@@ -5,7 +5,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+, ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setupGame();
@@ -86,8 +86,15 @@ void MainWindow::updateGame()
             bg2->setX(bg1->x() + 800);
         }
 
+        // Move other items (e.g., bricks, enemies, etc.) based on scroll
         for (QGraphicsItem* item : scene->items()) {
             if (item == player || item == bg1 || item == bg2) continue;
+
+            // Check if item is off the screen to the left, and reposition it
+            if (item->x() + item->boundingRect().width() < 0) {
+                item->setX(scene->sceneRect().width());
+            }
+
             item->moveBy(-scrollSpeed, 0);
         }
     }
@@ -104,12 +111,18 @@ void MainWindow::updateGame()
             bg2->setX(bg1->x() - 800);
         }
 
+        // Move other items (e.g., bricks, enemies, etc.) based on scroll
         for (QGraphicsItem* item : scene->items()) {
             if (item == player || item == bg1 || item == bg2) continue;
+
+            // Check if item is off the screen to the right, and reposition it
+            if (item->x() > scene->sceneRect().width()) {
+                item->setX(0 - item->boundingRect().width());
+            }
+
             item->moveBy(scrollSpeed, 0);
         }
     }
-
 }
 
 

@@ -22,14 +22,17 @@ public:
     Level(int number, QGraphicsScene* scene, Player* p1);  // Constructor with level number, scene, and player
 
     void setupLevel();                                          // Setup level objects (obstacles, enemies, etc.)
-    void addObstacle(QGraphicsItem* obstacle);                  // Add obstacle to the level
     void addEnemy(QGraphicsItem* enemy);                        // Add enemy to the level
     void resetLevel();                                          // Reset the level (e.g., restart the level)
     void nextLevel();                                           // Move to the next level
-    int getLevelNumber() const;                                 // Get the current level number
+    int getLevelNumber() const;
+    void addObstacle(QGraphicsItem* obstacle);        // Get the current level number
 
     // New helper functions
     QGraphicsPixmapItem* createBrick(int x, int y);             // Function to create bricks at random positions
+    void addFireObstacles();                                    // Add fire obstacles on the platforms
+    void addCactusObstacles();                                  // Add cactus obstacles on the platforms
+    void addQuicksandObstacles();
 };
 
 #endif // LEVEL_H

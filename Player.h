@@ -8,7 +8,7 @@
 #include <QPixmap>
 #include <QTimer>
 
-class Player : public QObject, public QGraphicsPixmapItem {
+                   class Player : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 
 public:
