@@ -60,3 +60,5 @@ void Display::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, Q
 {
     // Custom rendering of the display
 }
+
+
