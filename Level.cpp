@@ -35,13 +35,15 @@ void Level::setupLevel()
 
     if (levelNumber == 1) {
         QVector<QPoint> platformPositions = {
-                                             {100, groundY - platformSpacingY},
-                                             {300, groundY - 2 * platformSpacingY},
-                                             {500, groundY - 3 * platformSpacingY},
-                                             {200, groundY - 4 * platformSpacingY},
-                                             {400, groundY - 5 * platformSpacingY},
-                                             {600, groundY - 6 * platformSpacingY},
-                                             };
+
+       {100, groundY - platformSpacingY},
+       {300, groundY - 2 * platformSpacingY},
+       {500, groundY - 3 * platformSpacingY},
+        {200, groundY - 4 * platformSpacingY},
+        {400, groundY - 5 * platformSpacingY},
+       {600, groundY - 6 * platformSpacingY},
+        };
+
 
         QRandomGenerator *randomGen = QRandomGenerator::global();
 
