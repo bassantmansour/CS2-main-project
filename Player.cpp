@@ -5,7 +5,7 @@
 #include <QGraphicsRectItem>
 #include <QDebug>
 
-Player::Player() : health(100), coins(0), isJumping(false), isCrouching(false), isAttacking(false), isRight(false), isLeft(false) {
+             Player::Player() : health(100), coins(0), isJumping(false), isCrouching(false), isAttacking(false), isRight(false), isLeft(false) {
     QPixmap standingPixmap(":/Character/playerstanding.png");
     QPixmap runningRightPixmap(":/Character/runningright.png");
     QPixmap runningLeftPixmap(":/Character/runningleft.png");
@@ -22,6 +22,7 @@ Player::Player() : health(100), coins(0), isJumping(false), isCrouching(false), 
 
     setPixmap(standingImage);
     setPos(100, 400);
+    dropletsCollected = 0;
 
     velocityY = 0;
     jumpTimer = new QTimer(this);
@@ -146,3 +147,10 @@ void Player::keyReleaseEvent(QKeyEvent* event) {
     }
 }
 
+void Player::incrementDroplets() {
+    dropletsCollected++;
+}
+
+int Player::getCollectedDroplets() const {
+    return dropletsCollected;
+}

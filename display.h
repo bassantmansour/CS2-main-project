@@ -6,7 +6,7 @@
 #include <QGraphicsTextItem>
 #include <QGraphicsRectItem>
 
-class Display : public QGraphicsItem
+            class Display : public QGraphicsItem
 {
 public:
     Display(int initialHealth, int level, QGraphicsScene* scene);
@@ -28,4 +28,3 @@ private:
 };
 
 #endif // DISPLAY_H
-

@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "Level.h"
 
-class Obstacle : public QGraphicsPixmapItem {
+             class Obstacle : public QGraphicsPixmapItem {
 public:
     enum class ObstacleType { Platform, Hazard, Moving };
 

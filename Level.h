@@ -6,7 +6,7 @@
 #include <QVector>
 #include "Player.h"  // Assuming you have a Player class
 
-class Level {
+          class Level {
 private:
     QGraphicsScene* scene;       // Scene to hold level objects
     QVector<QGraphicsItem*> obstacles;  // List of obstacles

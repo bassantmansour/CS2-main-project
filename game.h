@@ -9,7 +9,7 @@
 #include "Player.h"
 #include "Level.h"
 
-class Game : public QGraphicsView {
+         class Game : public QGraphicsView {
     Q_OBJECT
 
 private:

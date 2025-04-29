@@ -1,16 +1,21 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include <QTimer>
 #include <QDebug>
-#include <QtCore/qtimer.h>
+#include <QFont>
+#include <QPixmap>
+#include "obstacle.h"
+#include "waterdroplet.h"
+#include <QGraphicsRectItem>
+#include <QPen>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-, ui(new Ui::MainWindow)
+
+                 MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setupGame();
 
-    // Set window title and size
     setWindowTitle("Desert Adventure Game");
     setFixedSize(800, 600);
 }
@@ -23,6 +28,7 @@ MainWindow::~MainWindow()
     delete player;
     delete level;
 }
+
 void MainWindow::setupGame()
 {
     scene = new QGraphicsScene(this);
@@ -36,7 +42,7 @@ void MainWindow::setupGame()
     setCentralWidget(view);
 
     QPixmap bgPixmap(":/backgrounds/desertbackground.jpg");
-    bgPixmap = bgPixmap.scaled(800, 600, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    bgPixmap = bgPixmap.scaled(800, 600);
     bg1 = scene->addPixmap(bgPixmap);
     bg2 = scene->addPixmap(bgPixmap);
     bg1->setPos(0, 0);
@@ -53,13 +59,55 @@ void MainWindow::setupGame()
     level = new Level(1, scene, player);
     level->setupLevel();
 
+    // Health bar outline
+    healthOutline = new QGraphicsRectItem(0, 0, 200, 20); // Fixed size
+    healthOutline->setPen(QPen(Qt::black));              // Black border
+    healthOutline->setBrush(Qt::NoBrush);                // Transparent inside
+    scene->addItem(healthOutline);
+
+    // Health bar fill (green inside)
+    healthBar = new QGraphicsRectItem(0, 0, 200, 20);     // Same size initially
+    healthBar->setBrush(Qt::green);                      // Green fill
+    healthBar->setPen(Qt::NoPen);                        // No border
+    scene->addItem(healthBar);
+
+
+
+    // Level Text
+    levelText = new QLabel("Level: 1", this);
+    levelText->setStyleSheet("color: black; font-weight: bold;");
+    levelText->move(600, 10);
+    levelText->resize(150, 30);
+
+    // Water Icon
+    waterIcon = new QLabel(this);
+    waterIcon->setPixmap(QPixmap(":/Obstacles/waterdroplet.tiff").scaled(30, 30));
+    waterIcon->move(600, 50);
+    waterIcon->resize(30, 30);
+
+    // Score Text
+    scoreText = new QLabel("0/20", this);
+    scoreText->setStyleSheet("color: black; font-weight: bold;");
+    scoreText->move(635, 50);
+    scoreText->resize(100, 30);
+
+    // Update timer
     QTimer* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateGame);
     timer->start(16);
-
-    scene->setSceneRect(0, 0, 800, 600);
 }
 
+void MainWindow::updateHealthBar()
+{
+    int hp = player->getHealth();
+    healthBar->setRect(0, 0, 2 * hp, 20);  // Shrink width based on health
+}
+
+void MainWindow::updateScore()
+{
+    int collected = player->getCollectedDroplets();
+    scoreText->setText(QString::number(collected) + "/20");
+}
 
 void MainWindow::updateGame()
 {
@@ -123,29 +171,33 @@ void MainWindow::updateGame()
             item->moveBy(scrollSpeed, 0);
         }
     }
+    int margin = 10;
+    int viewRight = this->width();
+    healthOutline->setPos(viewRight - 230, margin + 30);
+    healthBar->setPos(viewRight - 230, margin + 30);
+
+
+    updateHealthBar();
+    updateScore();
+
 }
+
+
 
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    // Forward key events to the player
     player->keyPressEvent(event);
-
-    // Additional game controls
     if (event->key() == Qt::Key_R) {
-        // Reset level on 'R' key
         level->resetLevel();
     } else if (event->key() == Qt::Key_N) {
-        // Next level on 'N' key
         level->nextLevel();
     }
-
     QMainWindow::keyPressEvent(event);
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
-    // Forward key events to the player
     player->keyReleaseEvent(event);
     QMainWindow::keyReleaseEvent(event);
 }

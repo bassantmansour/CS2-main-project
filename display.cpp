@@ -6,7 +6,7 @@
 #include <QFont>
 #include "Display.h"
 
-Display::Display(int initialHealth, int level, QGraphicsScene* scene)
+              Display::Display(int initialHealth, int level, QGraphicsScene* scene)
     : health(initialHealth), level(level), scene(scene)
 {
     // Create the health text item
@@ -60,5 +60,3 @@ void Display::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, Q
 {
     // Custom rendering of the display
 }
-
-

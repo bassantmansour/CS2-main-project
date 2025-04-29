@@ -3,8 +3,10 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QRandomGenerator>
+#include "waterdroplet.h"
 
-Level::Level(int number, QGraphicsScene* scene, Player* p1)
+
+            Level::Level(int number, QGraphicsScene* scene, Player* p1)
     : scene(scene), p1(p1), levelNumber(number)
 {
 }
@@ -17,6 +19,14 @@ void Level::setupLevel()
         delete item;
     }
     obstacles.clear();
+
+    for (int i = 0; i < 20; ++i) {
+        int x = 150 + i * 100;
+        int y = 100 + (i % 3) * 80;
+        WaterDroplet* droplet = new WaterDroplet(x, y);
+        scene->addItem(droplet);
+    }
+
 
     const int groundY = 550;
     const int platformWidth = 250;

@@ -2,8 +2,9 @@
 #include <QGraphicsTextItem>
 #include <QFont>
 #include <QApplication>
+#include "waterdroplet.h"
 
-Game::Game(QWidget* parent) : QGraphicsView(parent), gameOver(false), score(0) {
+           Game::Game(QWidget* parent) : QGraphicsView(parent), gameOver(false), score(0) {
     // Create and configure the scene
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, 800, 600); // Set scene size
@@ -241,6 +242,12 @@ void Game::update() {
 
     // Check for collisions
     checkCollisions();
+    for (QGraphicsItem* item : scene->items()) {
+        WaterDroplet* drop = dynamic_cast<WaterDroplet*>(item);
+        if (drop) {
+            drop->checkCollision(player);
+        }
+    }
 
     // Check level completion (you'll need to define your own criteria)
     // Example: if (allEnemiesDefeated && playerAtExit) {

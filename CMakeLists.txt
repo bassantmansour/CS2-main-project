@@ -29,6 +29,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Player.h Player.cpp
         obstacle.h obstacle.cpp
         display.h display.cpp
+        waterdroplet.h waterdroplet.cpp
 
 
     )
