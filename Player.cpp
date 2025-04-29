@@ -145,8 +145,4 @@ void Player::keyReleaseEvent(QKeyEvent* event) {
         setPixmap(standingImage);
     }
 }
-<<<<<<< HEAD
 
-
-=======
->>>>>>> ff98e12 (29 april)

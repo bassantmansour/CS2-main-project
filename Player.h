@@ -53,7 +53,6 @@ private:
     QPixmap attackImage;
 };
 
-#endif 
+#endif
 
 
-#endif // PLAYER_H
